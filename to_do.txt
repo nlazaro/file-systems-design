@@ -35,7 +35,7 @@ initialization:
 - have fat, and every block has address near end that links towards block
 - address of first block is x and is free space
 - pop 2nd bloc
-- dont do contioguous allkocaiton
+- dont do contioguous allocaiton
 ---------------------------------------------------------------------
 FILE SYSTEM MUST:
 -which blocks belong to which files.
@@ -44,12 +44,4 @@ FILE SYSTEM MUST:
 --------------------------------------------------------------------------
 - create linked lists for file contents
 - create hashmap for FAT table
-ca
 --------------------------------------------------------------------------
-LINKED LISTS ok
-HASHMAPS
-VECTOR
-FSTREAM ok
-PUBLIC VS PRIVATE ok
-INITIATION 
-STRINGS AND ARRAYS
