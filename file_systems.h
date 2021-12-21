@@ -6,21 +6,29 @@
 #include <string> 
 #include <vector>
 #include <map>
-#include <stdlib.h> //random
+#include <stdlib.h>
+#include <cctype>
+#include <filesystem>
+#include <cstdint>
+#include <iterator>
 
 
 using namespace std;
 
 const int BLOCK_LIMIT = 8;
 const int MAX_MEMORY = 5120;
-bool ALLOCATION_TYPE_ACCEPT = 0;
+int ALLOCATION_TYPE_ACCEPT = 0;
 string input;
 string ALLOCATION_TYPE;
 string FILE_NAME;
 string FILE_CONTENT;
+string NEW_DIRECTORY;
+string CURRENT_DIRECTORY;
 vector<string> TEMP_DATA = {};
 map<string,int> INODE;
 map<int,int> FAT;
+unordered_map<string, string> DIRECTORY;
+multimap<string, string> DIRECTORY;
 
 // Creates the node class for linked lists
 class Node{
@@ -41,9 +49,11 @@ public:
     vector<string> convertFileContentIntoBlocks(string file_contents);
     void updateInode(string fileName, int startingAddress);
     void updateFAT(int start_address, int pointer_towards_next_block);
+    void updateFAT2(int start, int next);
     int checkNode(Node *n, int key);
     int RandomBlock(int data);
     void randomlyAssignFileContent(string fileName, vector<string> data);
+    void deleteNodes(int key);
     ~LinkedList();
     
 };
@@ -107,13 +117,51 @@ vector<string> LinkedList::convertFileContentIntoBlocks(string file_content){
         return data;
     }
 
+// Keeps track of file and their starting block address
 void LinkedList::updateInode(string fileName, int startingAddress){
     INODE.insert(pair<string,int>(fileName, startingAddress));
 }
 
-// Updates FAT table
+//linked allocation
+// Keeps track of linked blocks for a file
 void LinkedList::updateFAT(int start_address, int pointer_towards_next_block){
-    FAT.insert(pair<int,int>(start_address, pointer_towards_next_block));
+     FAT.insert(pair<int,int>(start_address, pointer_towards_next_block));
+    }
+}
+
+//index allocation
+void LinkedList::updateFAT2(int start, int next){
+    FAT.insert(pair<int,int>(start, next));
+    Node* n->next;
+    Node* last2->
+}
+
+void LinkedList(){
+    head_ptr = new Node;
+    head_ptr->BLOCK_NUMBER = 0;
+    head_ptr->NEXT_PTR = nullptr;
+    last_ptr = head_ptr;
+    //Creates the remaining 5,119 nodes
+    for(int i = 1; i < MAX_MEMORY - 1; i++){
+        // Creates new node
+        temp_ptr = new Node;
+        // Places data into node
+        temp_ptr->BLOCK_NUMBER = i;
+        temp_ptr->NEXT_PTR = nullptr;
+        // Last_ptr's next pointer points to the new node
+        last_ptr->NEXT_PTR = temp_ptr;
+        last_ptr = temp_ptr;
+    }
+    /*
+    //TESTING//
+    //prints out all nodes
+    Node* p = head_ptr;
+    while(p!= nullptr){
+        cout << p->BLOCK_NUMBER << " " << p->FREE_NODE << " ";
+        p = p->NEXT_PTR;
+        cout << "->";
+    delete p;
+    */
 }
 
 // Checks nodes for unused blocks
@@ -147,19 +195,32 @@ int LinkedList::RandomBlock(int random_data){
 void LinkedList::randomlyAssignFileContent(string fileName, vector<string> data){
     int starting_block_number;
     int following_block_number;
-    int temp;
+    int secondary_block_number;
     starting_block_number = RandomBlock(0);
+    //Creates listing for file name and starting address
     updateInode(fileName, starting_block_number);
-    for(int i=1; i < data.size(); i++){
-        starting_block_number = RandomBlock(i);
-        if(data.size() > 0){
-            following_block_number = RandomBlock(i+1);
-            i++;
-            updateFAT(starting_block_number, following_block_number);
-            }
+    following_block_number = RandomBlock(1);
+    //Creates lising for starting address and following blocks
+    if(ALLOCATION_TYPE == 1){
+        updateFAT(starting_block_number, following_block_number);
+    }
+    else{
+        updateFAT2(starting_block_number, following_block_number);
+    }
+    /////
+    for(int i=2; i < data.size(); i++){
+        secondary_block_number = RandomBlock(i);
+        i++;
+        updateFAT(following_block_number, secondary_block_number);
+        following_block_number = secondary_block_number;
         }
-    following_block_number = -1;
-    updateFAT(starting_block_number, following_block_number);
+    secondary_block_number = -1;
+    if(ALLOCATION_TYPE == 1){
+        updateFAT(following_block_number, secondary_block_number);
+    }
+    else{
+        updateFAT2(following_block_number, secondary_block_number);
+    }
 }
 
 /////////////////////
@@ -188,6 +249,120 @@ void help(){
         << "exit                        Exits this terminal screen.\n";
 }
 
+// Keeps track of directory
+void updateDirectory(string location, string files){
+    DIRECTORY.insert(pair<string, string> (location, files));
+}
+
+// Deletes directory and files within them
+void deleteDirectory(string location){
+    for(auto x : DIRECTORY)
+        if(x.first == location){
+
+        }
+}
+
+// Deletes current file
+void deleteFile(string fileName){
+    for (auto itr = INODE.begin(); itr != INODE.end(); itr++) {
+        if(fileName == itr->first){
+            deleteFAT(itr->second);
+            INODE.erase(fileName);
+        }
+}
+}
+// Deletes file blocks and frees blocks
+void LinkedList::deleteNodes(Node *n){
+    while(n!=NULL){
+        if(key==n->BLOCK_NUMBER){
+            n->DATA=NULL;
+            n->FREE_NODE=0;
+            }
+        n->NEXT_PTR;
+        }
+}
+
+
+// Deletes records from FAT table & Inode table
+
+void deleteFAT(Node *n){
+    for(auto x: FAT){
+        if(x.second != -1){
+            deleteNodes(n->BLOCK_NUMBER);
+            x == x.second;
+        }
+    }
+    /*TESTING
+    map<int,int>::iterator itr;
+    for(itr=FAT.begin();itr!=FAT.end();itr++){
+        cout << itr->first << " " << itr->second << endl;
+    }
+    cout << "FIRST DONE" << endl;
+    int num = 123, erase_num, temp;
+    while(bool tree = 1){
+    for (itr = FAT.begin(); itr != FAT.end(); ++itr) {
+        if(num==itr->first){
+            temp = itr->second;
+            erase_num = FAT.erase(num);
+            if(temp == -1){
+                tree = 0;
+            }
+        }
+    }
+    num = temp;
+    }
+    for(itr=FAT.begin();itr!=FAT.end();itr++){
+        cout << itr->first << " " << itr->second << endl;
+    }
+    */
+}
+
+void deleteInode(string location){
+    for (auto itr = INODE.begin(); itr != INODE.end(); itr++) {
+        if(fileName == itr->first){
+            deleteFAT(itr->second);
+            INODE.erase(fileName);
+        }
+        }
+}
+
+// writes data to drive.txt file
+void writeToFile(data){
+    ofstream my_file;
+    my_file.open("drive.txt", ofstream::app);
+    my_file << data;
+    my_file.close();
+}
+
+/*
+//spilts data from drive.txt into four parts: superblock, inodes, FAT table, and all data blocks with "*!*!" being splitter
+void spiltString(){
+    int pos;
+    string spilt = "!*!*", temp, temp_file, temp_file_1, temp_file_2, temp_file_3, temp_file_4;
+    ifstream my_file("drive.txt", ifstream::app);
+    getline(my_file, temp_file);
+    pos = temp_file.find(spilt);
+    temp_file_1 = temp_file.substr(0, pos); //hello world
+    temp = temp_file.substr(pos + 1);
+
+    pos = temp.find(spilt);
+    temp_file_2 = temp.substr(3, pos);
+    temp_file = temp.substr(pos + 1);
+
+    pos = temp_file.find(spilt);
+    temp_file_3 = temp_file.substr(3, pos);
+    temp_file_4 = temp_file.substr(pos + 1);
+
+     cout << "1" << temp_file_1 << endl;
+     cout <<  "2" << temp_file_2 << endl;
+     cout << "3" << temp_file_3 << endl;
+     cout << "4" << temp_file_4 << endl;
+     
+     my_file.close();
+}
+*/
+
+}
 /* maps
     map<int,int> fat;
     fat.insert(pair<int,int>(1,3));
