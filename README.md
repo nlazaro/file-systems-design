@@ -28,7 +28,7 @@ The starting block of the file is stored within the FAT (file allocation table),
 The starting block is still stored within the FAT, however it also stores all the pointers that the file contains. The file is read in order of the stored pointers.
 
  <p align="center">
- <src="indexed.jpeg"></p>
+ <img src="indexed.jpeg"></p>
  
  ```
  Image source/credits: https://www.geeksforgeeks.org/file-allocation-methods/
