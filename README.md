@@ -16,7 +16,7 @@ Here is a demo within the console:
 The starting block of the file is stored within the FAT (file allocation table), and a pointer towards the next block. Each block has a pointer towards another block, and the last block (end of the file) has a -1 indicating a null pointer.
 
 
-<img align="center", img src="linkedlist.jpeg">
+<img align="center", src="linkedlist.jpeg">
 
 ```
  Image source/credits: https://www.geeksforgeeks.org/file-allocation-methods/
@@ -28,7 +28,7 @@ The starting block of the file is stored within the FAT (file allocation table),
 The starting block is still stored within the FAT, however it also stores all the pointers that the file contains. The file is read in order of the stored pointers.
 
  
- <img align="center", img src="indexed.jpeg">
+ <img align="center", src="indexed.jpeg">
  
  ```
  Image source/credits: https://www.geeksforgeeks.org/file-allocation-methods/
