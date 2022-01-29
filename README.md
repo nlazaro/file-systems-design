@@ -13,7 +13,7 @@ Here is a demo within the console:
 
 **Linked List Allocation Description:**
 
-The starting block of the file is stored within the FAT (file allocation table), and a pointer towards the next block. Each block has a pointer towards another block, and the last block (end of the file) has a -1 indicating a null pointer.
+The starting block of the file is stored within the FAT (file allocation table), and a contains pointer towards the following block. Each block has it's own pointer towards another block, and the last block (end of the file) has a -1 indicating a null pointer.
 
 <p align="center">
 <img src="linkedlist.jpeg"></p>
