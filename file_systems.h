@@ -292,8 +292,9 @@ void deleteFAT(Node *n){
             x == x.second;
         }
     }
-    /*TESTING
-    map<int,int>::iterator itr;
+}
+
+map<int,int>::iterator itr{
     for(itr=FAT.begin();itr!=FAT.end();itr++){
         cout << itr->first << " " << itr->second << endl;
     }
@@ -314,7 +315,6 @@ void deleteFAT(Node *n){
     for(itr=FAT.begin();itr!=FAT.end();itr++){
         cout << itr->first << " " << itr->second << endl;
     }
-    */
 }
 
 void deleteInode(string location){
@@ -334,7 +334,6 @@ void writeToFile(data){
     my_file.close();
 }
 
-/*
 //spilts data from drive.txt into four parts: superblock, inodes, FAT table, and all data blocks with "*!*!" being splitter
 void spiltString(){
     int pos;
@@ -360,11 +359,55 @@ void spiltString(){
      
      my_file.close();
 }
-*/
 
+void freeLink(string table, int lhead, lsize){
+    int ltail=gettail(table);
+    int ntail=getLinkTail(lhead,lsize);
+    return;
 }
-/* maps
-    map<int,int> fat;
+
+void createFile(string fileName, string content) {
+    fstream fs;
+    content += EOF_;
+    fs.open(SYSTEM_FILE_NAME_);
+    string table;
+    getline(fs, table);
+    int s = table.find('~') + 1;
+    table = table.substr(s);
+    if (fileName.find("/") != npos || fileName.find("-") != npos || fileName.find(" ") != npos) {
+            cout << "Invalid symbol entered." << endl;
+            fs.close();
+            return;
+        }
+    int size = int(content.size() / BLOCK_SIZE_) + (content.size() % BLOCK_SIZE_ != 0);
+    fs.close();
+    vector<string> c = splitToBlocks(content);
+    if (c.size() > getFreeBlocks(table)) {
+        cout << "Not Enough Space" << endl;
+        return;
+        }
+        return;
+}
+
+ string readBlock(int pos, int ptr) {
+        fstream fs;
+        fs.open(SYSTEM_FILE_NAME_);
+        string return_ = "";
+        fs.seekg(pos + ptr * (BLOCK_SIZE_ + PTR_LEN_L_));
+        char c;
+        for (size_t i = 0; i < BLOCK_SIZE_; i++) {
+            fs.get(c);
+            outp += c;
+            if (c == EOF_) {
+                fs.close();
+                return return_;
+            }
+        }
+        fs.close();
+        return return_;
+    }
+}
+map<int,int> fat{
     fat.insert(pair<int,int>(1,3));
     fat.insert(pair<int,int>(3,2));
     fat.insert(pair<int,int>(2,-1));
@@ -373,5 +416,5 @@ void spiltString(){
     for(itr=fat.begin();itr!=fat.end();itr++){
         cout<<itr->first<<" "<<itr->second<<endl;
     }
-    */
+}
 #endif

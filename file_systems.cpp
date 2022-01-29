@@ -52,9 +52,8 @@ int main(){
         input = makeLowerCase(input);
         if(input == "exit") return 0;
         else if(input == "help") help();
-        /*else if(input == "ls")
-        else if(input == "cd")
-        */
+        else if(input == "ls")ls();
+        else if(input == "cd")cd();
         else if(input == "du"){
             uintmax_t size = filesystem::file_size("drive.txt");
             cout << "Current size of drive: " << size << endl;
