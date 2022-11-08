@@ -1,4 +1,4 @@
-# File Systems Design
+# File System Design
 
 **File system created in C++ that uses linked list and indexed allocation methods within a text file that acts as a disk drive.**
 
